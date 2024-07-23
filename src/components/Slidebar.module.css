@@ -12,7 +12,10 @@
   }
   
   .sidebar h2 {
-    margin-top: 0;
+    text-align: center;
+    font-size:x-large;
+    margin-top: 10px;
+    margin-bottom: 30px;
   }
   
   .sidebar ul {
@@ -25,11 +28,18 @@
   }
   
   .sidebar ul li a {
+    font-size: large;
     color: white;
     text-decoration: none;
+    opacity: 70%;
   }
   
   .sidebar ul li a:hover {
-    text-decoration: underline;
+    
+    color: white;
+    font-weight: bold;
+    opacity: 100%;
+   
+   
   }
   

@@ -15,33 +15,34 @@ import {
   } 
 from "@/components/ui/table"
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 
 const handleDel = async (id) => {
     const result = await Swal.fire({
-      title: 'Bạn có chắc chắn muốn xóa?',
-      text: "Hành động này không thể hoàn tác!",
+      title: 'Delete?',
+      text: "This action cannot be undone!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Đúng, xóa nó!'
+      confirmButtonText: 'Confirm!'
     });
 
     if (result.isConfirmed) {
       try {
       const response = await axios.delete('https://localhost:7124/api/Department?id='+ id);
       Swal.fire(
-        'Đã xóa!',
-        'Dữ liệu của bạn đã được xóa.',
+        'Deleted!',
+        'Your data has been deleted.',
         'success'
       );
       window.location.reload();
 
     } catch (error) {
       Swal.fire(
-        'Lỗi!',
-        'Không thể xóa dữ liệu. Vui lòng thử lại sau.',
+        'Error!',
+        'Data cannot be deleted. Please try again later.',
         'error'
       );
     }
@@ -51,21 +52,33 @@ const handleDel = async (id) => {
     window.location = "http://localhost:3000/department/edit?id=" + id;
    
   };
+  const handleAdd = async () => {
+    window.location = "http://localhost:3000/department/add";
+   
+  };
 
   
 
 
 
 const DepartmentTable = ({departments}) => {
+
+
+  const [message, setMessage] = useState('');
+  
+
     return (
-        <><Table>
-            <TableCaption>A list of your Department.</TableCaption>
-            <TableHeader>
+        <>
+        <h1 className='text-center text-lg opacity-80 mt-8 '>A list of your Department.</h1>
+        <Table className='text-base'>
+         
+            <TableCaption className='text-lg'></TableCaption>
+            <TableHeader className='font-bold'>
                 <TableRow>
-                    <TableHead className="w-[100px]">ID</TableHead>
-                    <TableHead>Name</TableHead>
+                    <TableHead className="w-[100px] font-bold">ID</TableHead>
+                    <TableHead className='font-bold'>Name</TableHead>
                     <TableHead></TableHead>
-                    <TableHead className="text-right"></TableHead>
+                    <TableHead className="text-right font-bold"></TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -73,15 +86,13 @@ const DepartmentTable = ({departments}) => {
                 <TableRow key={item.deptId}>
                 <TableCell className="font-medium">{item.deptId}</TableCell>
                 <TableCell>{item.name}</TableCell>
-                <TableCell><Button onClick={() => handleEdit(item.deptId)}>Sửa</Button></TableCell>
-                <TableCell className="text-right"><Button onClick={() => handleDel(item.deptId)}>Xoá</Button></TableCell>
-            </TableRow>
-                           
-                        ))}
-                
+                <TableCell className='text-right w-3'><Button className='bg-orange-400 ' onClick={() => handleEdit(item.deptId)}>Edit</Button></TableCell>
+                <TableCell className='text-right w-3'><Button className='bg-red-700' onClick={() => handleDel(item.deptId)}>Delete</Button></TableCell>
+            </TableRow>                           
+                        ))}            
             </TableBody>
         </Table><div>
-                <div><Button><Link href="/department/add">Thêm</Link></Button> </div>
+        <Button className='bg-green-500 float-right mt-8 mr-3' onClick={() => handleAdd()}>Create</Button>          
             </div></>)
       
 }
