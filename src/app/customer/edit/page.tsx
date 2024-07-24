@@ -6,10 +6,10 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import { useEffect, useState } from 'react';
+import SidebarComponent from '@/app/home/page';
 
-export default function EditTable() {
-  //const router = useRouter();
 
+export default function Home() {
   const [name, setName] = useState('');
   const [deptId, setDeptId] = useState('');
   const [password, setPassword] = useState('');
@@ -44,9 +44,11 @@ export default function EditTable() {
       setMessage('Đăng ký thất bại: ' + error.response?.data?.message || error.message);
     }
   };
-
   return (
-    <div  className='m-5'>
+    <div style={{ display: 'flex' }}>
+      <SidebarComponent />
+      <div className='flex-1 p-5 ml-64 mr-6'>
+      <div  className='m-5'>
       <h1 className='font-bold text-xl'>Update Department</h1>
       <form onSubmit={handleSubmit}>
 
@@ -73,5 +75,8 @@ export default function EditTable() {
       </form>
       {message && <p>{message}</p>}
     </div>
+      </div>
+    </div>
+    
   );
 }

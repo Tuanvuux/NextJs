@@ -29,17 +29,17 @@ export default function Home() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetchDepartments();
+    fetchBranch();
   }, []);
 
-  const fetchDepartments = async (name = '') => {
+  const fetchBranch = async (name = '') => {
     setLoading(true);
     try {
-      const response = await axios.get('https://localhost:7124/api/Department', {
+      const response = await axios.get('https://localhost:7124/api/Branch', {
         params: { name }
       });
       setData(response.data);
-      setCurrentPage(1); // Reset to page 1 on new search
+      setCurrentPage(1);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -48,7 +48,7 @@ export default function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchDepartments(name);
+    fetchBranch(name);
   };
 
   const handleDel = async (id) => {
@@ -64,13 +64,13 @@ export default function Home() {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete('https://localhost:7124/api/Department?id=' + id);
+        await axios.delete('https://localhost:7124/api/Branch?id=' + id);
         Swal.fire(
           'Deleted!',
           'Your data has been deleted.',
           'success'
         );
-        fetchDepartments(name); // Fetch departments with the current search term
+        fetchBranch(name); // Fetch departments with the current search term
       } catch (error) {
         Swal.fire(
           'Error!',
@@ -82,11 +82,11 @@ export default function Home() {
   };
 
   const handleEdit = async (id: any) => {
-    window.location = "http://localhost:3000/department/edit?id=" + id;
+    window.location = "http://localhost:3000/branch/edit?id=" + id;
   };
 
   const handleAdd = async () => {
-    window.location = "http://localhost:3000/department/add";
+    window.location = "http://localhost:3000/branch/add";
   };
 
   const handlePageChange = (newPage) => {
@@ -111,7 +111,7 @@ export default function Home() {
         <Input
           className='w-4/7 mb-5 float-left mr-2'
           type="text"
-          placeholder='Department Name'
+          placeholder='Branch Name'
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -127,21 +127,28 @@ export default function Home() {
           <TableRow>
             <TableHead className="w-[100px] font-bold">ID</TableHead>
             <TableHead className='font-bold'>Name</TableHead>
-            <TableHead></TableHead>
+            <TableHead>Address</TableHead>
+            <TableHead>City</TableHead>
+            <TableHead>State</TableHead>
+            <TableHead>Zip Code</TableHead>
             <TableHead className="text-right font-bold"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {selectedData.length > 0 ? (
             selectedData.map((item) => (
-              <TableRow key={item.deptId}>
-                <TableCell className="font-medium">{item.deptId}</TableCell>
+              <TableRow key={item.branchId}>
+                <TableCell className="font-medium">{item.branchId}</TableCell>
                 <TableCell>{item.name}</TableCell>
+                <TableCell>{item.address}</TableCell>
+                <TableCell>{item.city}</TableCell>
+                <TableCell>{item.state}</TableCell>
+                <TableCell>{item.state}</TableCell>
                 <TableCell className='text-right w-3'>
-                  <Button className='bg-orange-400' onClick={() => handleEdit(item.deptId)}>Edit</Button>
+                  <Button className='bg-orange-400' onClick={() => handleEdit(item.branchId)}>Edit</Button>
                 </TableCell>
                 <TableCell className='text-right w-3'>
-                  <Button className='bg-red-700' onClick={() => handleDel(item.deptId)}>Delete</Button>
+                  <Button className='bg-red-700' onClick={() => handleDel(item.branchId)}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))
