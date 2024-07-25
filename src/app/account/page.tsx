@@ -29,13 +29,13 @@ export default function Home() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetchCustomers();
+    fetchBranch();
   }, []);
 
-  const fetchCustomers = async (name = '') => {
+  const fetchBranch = async (name = '') => {
     setLoading(true);
     try {
-      const response = await axios.get('https://localhost:7124/api/Customer', {
+      const response = await axios.get('https://localhost:7124/api/Account', {
         params: { name }
       });
       setData(response.data);
@@ -48,7 +48,7 @@ export default function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchCustomers(name);
+    fetchBranch(name);
   };
 
   const handleDel = async (id) => {
@@ -58,18 +58,19 @@ export default function Home() {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       confirmButtonText: 'Confirm!'
     });
 
     if (result.isConfirmed) {
       try {
-        await axios.delete('https://localhost:7124/api/Customer?id=' + id);
+        await axios.delete('https://localhost:7124/api/Account?id=' + id);
         Swal.fire(
           'Deleted!',
           'Your data has been deleted.',
           'success'
         );
-        fetchCustomers(name); 
+        fetchBranch(name); // Fetch departments with the current search term
       } catch (error) {
         Swal.fire(
           'Error!',
@@ -81,11 +82,11 @@ export default function Home() {
   };
 
   const handleEdit = async (id: any) => {
-    window.location = "http://localhost:3000/customer/edit?id=" + id;
+    window.location = "http://localhost:3000/account/edit?id=" + id;
   };
 
   const handleAdd = async () => {
-    window.location = "http://localhost:3000/customer/add";
+    window.location = "http://localhost:3000/account/add";
   };
 
   const handlePageChange = (newPage) => {
@@ -107,51 +108,56 @@ export default function Home() {
         <div className='flex-1 p-5 ml-64 mr-6'>
         <>
       <form className='float-right w-2/7' onSubmit={handleSearch}>
-        <Input
+        {/* <Input
           className='w-4/7 mb-5 float-left mr-2'
           type="text"
-          placeholder='Customer Name'
+          placeholder='Customer ID'
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <Button className='bg-blue-600 float-left' type="submit">Search</Button>
+        <Button className='bg-blue-600 float-left' type="submit">Search</Button> */}
         <Button className='bg-green-500 float-left ml-2' onClick={handleAdd}>Create</Button>
       </form>
       <br />
-      <h1 className='text-center text-lg opacity-80 mt-8'>A list of your Customer.</h1>
+      <h1 className='text-center text-lg opacity-80 mt-8'>A list of your Account.</h1>
       <Table className='text-base'>
         <TableCaption className='text-lg'></TableCaption>
         <TableHeader className='font-bold'>
           <TableRow>
             <TableHead className="w-[100px] font-bold">ID</TableHead>
-            <TableHead className='font-bold'>Full Name</TableHead>
-            <TableHead className='font-bold'>Birth Day</TableHead>
-            <TableHead className='font-bold'>Incorn Day</TableHead>
-            <TableHead className='font-bold'>Address</TableHead>
-            <TableHead className='font-bold'>City</TableHead>
-            <TableHead className='font-bold'>CustomerType</TableHead>
-            <TableHead></TableHead>
+            <TableHead className='font-bold'>Balance</TableHead>
+            <TableHead>Close Date</TableHead>
+            <TableHead>Last Activity Day</TableHead>
+            <TableHead>Pending Balance</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>CustId</TableHead>
+            <TableHead>Open Emp Id</TableHead>
+            <TableHead>Open Branch Id</TableHead>
+            <TableHead>Product Cd</TableHead>
+            
             <TableHead className="text-right font-bold"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {selectedData.length > 0 ? (
             selectedData.map((item) => (
-              <TableRow key={item.custId}>
-                <TableCell className="font-medium">{item.custId}</TableCell>
-                <TableCell>{item.fullName}</TableCell>
-                <TableCell>{item.birthDay}</TableCell>
-                <TableCell>{item.incorpDay}</TableCell>
-                <TableCell>{item.address}</TableCell>
-                <TableCell>{item.city}</TableCell>
-                <TableCell>{item.customerType}</TableCell>
-       
+              <TableRow key={item.account_Id}>
+                <TableCell className="font-medium">{item.account_Id}</TableCell>
+                <TableCell>{item.availBalance}</TableCell>
+                <TableCell>{item.closeDate}</TableCell>
+                <TableCell>{item.lastActivityDay}</TableCell>
+                <TableCell>{item.pendingBalance}</TableCell>
+                <TableCell>{item.status}</TableCell>
+                <TableCell>{item.custId}</TableCell>
+                <TableCell>{item.openEmpId}</TableCell>
+                <TableCell>{item.openBranchId}</TableCell>
+                <TableCell>{item.productCd}</TableCell>
                 <TableCell className='text-right w-3'>
-                  <Button className='bg-orange-400' onClick={() => handleEdit(item.custId)}>Edit</Button>
+                  <Button className='bg-orange-400' onClick={() => handleEdit(item.account_Id)}>Edit</Button>
                 </TableCell>
                 <TableCell className='text-right w-3'>
-                  <Button className='bg-red-700' onClick={() => handleDel(item.custId)}>Delete</Button>
+                  <Button className='bg-red-700' onClick={() => handleDel(item.account_Id)}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))

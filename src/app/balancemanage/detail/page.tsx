@@ -17,27 +17,29 @@ import {
 } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import SidebarComponent from '../home/page';
-
-
+import SidebarComponent from '@/app/home/page';
+import { useSearchParams } from 'next/navigation';
 
 export default function Home() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+//   const [custId, setcustId] = useState('');
   const [name, setName] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
+  const params = useSearchParams();
+  var custId = params.get('id');
   useEffect(() => {
-    fetchCustomers();
+    fetchCustomers(String(custId));
   }, []);
 
-  const fetchCustomers = async (name = '') => {
+  const fetchCustomers = async (custId ) => {
+
     setLoading(true);
+ 
     try {
-      const response = await axios.get('https://localhost:7124/api/Customer', {
-        params: { name }
-      });
+      const response = await axios.get(`https://localhost:7124/api/Customer/transaction/${custId}`);
+      console.log(response)
       setData(response.data);
       setCurrentPage(1);
       setLoading(false);
@@ -48,7 +50,7 @@ export default function Home() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchCustomers(name);
+    fetchCustomers(String(custId));
   };
 
   const handleDel = async (id) => {
@@ -80,13 +82,7 @@ export default function Home() {
     }
   };
 
-  const handleEdit = async (id: any) => {
-    window.location = "http://localhost:3000/customer/edit?id=" + id;
-  };
 
-  const handleAdd = async () => {
-    window.location = "http://localhost:3000/customer/add";
-  };
 
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return; // Prevent invalid page changes
@@ -98,6 +94,7 @@ export default function Home() {
   const selectedData = data.slice(startIndex, startIndex + itemsPerPage);
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
+ 
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -116,7 +113,7 @@ export default function Home() {
           onChange={(e) => setName(e.target.value)}
         />
         <Button className='bg-blue-600 float-left' type="submit">Search</Button>
-        <Button className='bg-green-500 float-left ml-2' onClick={handleAdd}>Create</Button>
+        {/* <Button className='bg-green-500 float-left ml-2' onClick={handleAdd}>Create</Button> */}
       </form>
       <br />
       <h1 className='text-center text-lg opacity-80 mt-8'>A list of your Customer.</h1>
@@ -140,19 +137,13 @@ export default function Home() {
             selectedData.map((item) => (
               <TableRow key={item.custId}>
                 <TableCell className="font-medium">{item.custId}</TableCell>
-                <TableCell>{item.fullName}</TableCell>
-                <TableCell>{item.birthDay}</TableCell>
-                <TableCell>{item.incorpDay}</TableCell>
-                <TableCell>{item.address}</TableCell>
-                <TableCell>{item.city}</TableCell>
-                <TableCell>{item.customerType}</TableCell>
-       
+                <TableCell>{item.accounts.account.productName}</TableCell>
+                
                 <TableCell className='text-right w-3'>
-                  <Button className='bg-orange-400' onClick={() => handleEdit(item.custId)}>Edit</Button>
+                  <Button className='bg-blue-500' onClick={() => handleEdit(item.custId)}>Detail</Button>
                 </TableCell>
-                <TableCell className='text-right w-3'>
-                  <Button className='bg-red-700' onClick={() => handleDel(item.custId)}>Delete</Button>
-                </TableCell>
+
+          
               </TableRow>
             ))
           ) : (

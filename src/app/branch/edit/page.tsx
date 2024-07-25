@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import queryString from 'query-string';
 import { useEffect, useState } from 'react';
 import SidebarComponent from '@/app/home/page';
+import Swal from 'sweetalert2';
 
 
 export default function Home() {
@@ -45,7 +46,11 @@ export default function Home() {
         zipCode,
        
       });
-      setMessage('Đăng ký thành công!');
+      const result = await Swal.fire(
+        'Update successful!',
+        'Your data has been Updated.',
+        'success'
+      );
       window.location = "/branch";
     } catch (error) {
       setMessage('Đăng ký thất bại: ' + error.response?.data?.message || error.message);

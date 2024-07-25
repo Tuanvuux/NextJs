@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import SidebarComponent from '@/app/home/page';
+import Swal from 'sweetalert2';
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -30,7 +31,11 @@ export default function Home() {
 
 
       });
-      setMessage('Đăng ký thành công!');
+      const result = await Swal.fire(
+        'Add successfully!',
+        'Your data has been Added.',
+        'success'
+      );
       window.location = "/branch"
     } catch (error) {
       setMessage('Đăng ký thất bại: ' + error.response?.data?.message || error.message);

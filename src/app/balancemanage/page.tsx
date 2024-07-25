@@ -80,14 +80,17 @@ export default function Home() {
     }
   };
 
-  const handleEdit = async (id: any) => {
-    window.location = "http://localhost:3000/customer/edit?id=" + id;
-  };
+  // const handleEdit = async (id: any) => {
+  //   window.location = "http://localhost:3000/customer/edit?id=" + id;
+  // };
 
-  const handleAdd = async () => {
-    window.location = "http://localhost:3000/customer/add";
-  };
+  // const handleAdd = async () => {
+  //   window.location = "http://localhost:3000/customer/add";
+  // };
 
+  const handleDetail = async (id: any) => {
+    window.location = "http://localhost:3000/balancemanage/detail?id="+ id;
+  };
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return; // Prevent invalid page changes
     setCurrentPage(newPage);
@@ -116,7 +119,7 @@ export default function Home() {
           onChange={(e) => setName(e.target.value)}
         />
         <Button className='bg-blue-600 float-left' type="submit">Search</Button>
-        <Button className='bg-green-500 float-left ml-2' onClick={handleAdd}>Create</Button>
+        {/* <Button className='bg-green-500 float-left ml-2' onClick={handleAdd}>Create</Button> */}
       </form>
       <br />
       <h1 className='text-center text-lg opacity-80 mt-8'>A list of your Customer.</h1>
@@ -126,11 +129,12 @@ export default function Home() {
           <TableRow>
             <TableHead className="w-[100px] font-bold">ID</TableHead>
             <TableHead className='font-bold'>Full Name</TableHead>
-            <TableHead className='font-bold'>Birth Day</TableHead>
+           
             <TableHead className='font-bold'>Incorn Day</TableHead>
-            <TableHead className='font-bold'>Address</TableHead>
+          
             <TableHead className='font-bold'>City</TableHead>
             <TableHead className='font-bold'>CustomerType</TableHead>
+            <TableHead className='font-bold'>Total Balance</TableHead>
             <TableHead></TableHead>
             <TableHead className="text-right font-bold"></TableHead>
           </TableRow>
@@ -141,18 +145,22 @@ export default function Home() {
               <TableRow key={item.custId}>
                 <TableCell className="font-medium">{item.custId}</TableCell>
                 <TableCell>{item.fullName}</TableCell>
-                <TableCell>{item.birthDay}</TableCell>
+              
                 <TableCell>{item.incorpDay}</TableCell>
-                <TableCell>{item.address}</TableCell>
+              
                 <TableCell>{item.city}</TableCell>
                 <TableCell>{item.customerType}</TableCell>
-       
+                <TableCell>{item.totalBalance}</TableCell>
                 <TableCell className='text-right w-3'>
+                  <Button className='bg-blue-500' onClick={() => handleDetail(item.custId)}>Detail</Button>
+                </TableCell>
+
+                {/* <TableCell className='text-right w-3'>
                   <Button className='bg-orange-400' onClick={() => handleEdit(item.custId)}>Edit</Button>
                 </TableCell>
                 <TableCell className='text-right w-3'>
                   <Button className='bg-red-700' onClick={() => handleDel(item.custId)}>Delete</Button>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))
           ) : (

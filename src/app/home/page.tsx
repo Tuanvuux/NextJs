@@ -37,6 +37,9 @@ const SidebarComponent = () => {
         <li>
           <Link href="/producttype">ProductType</Link>
         </li>
+        <li>
+          <Link href="/balancemanage">Balance management</Link>
+        </li>
       
       </ul>
     </div>
