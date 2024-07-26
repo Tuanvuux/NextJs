@@ -45,7 +45,7 @@ export default function TransactionDetail() {
   };
 
   if (loading) return <div>Loading...</div>;
-
+console.log(transactions[0]);
   return (
     <div className='flex'>
       <SidebarComponent />
@@ -65,13 +65,13 @@ export default function TransactionDetail() {
           <TableBody>
             {transactions.length > 0 ? (
               transactions.map((transaction) => (
-                <TableRow key={transaction.accTransaction.txn_Id}>
+                transaction.accTransaction.accountId == accountId &&(<TableRow key={transaction.accTransaction.txn_Id}>
                   <TableCell>{transaction.accTransaction.txn_Id}</TableCell>
                   <TableCell>{transaction.accTransaction.amount}</TableCell>
                   <TableCell>{new Date(transaction.accTransaction.txnDate).toLocaleDateString()}</TableCell>
                   <TableCell>{transaction.branchName}</TableCell>
                   <TableCell>{transaction.employeeName}</TableCell>
-                </TableRow>
+                </TableRow>) 
               ))
             ) : (
               <TableRow>
