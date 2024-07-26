@@ -161,7 +161,7 @@ export default function Home() {
         >
           Previous
         </Button>
-        <span className='ml-96 mr-96'>Page {currentPage} of {totalPages}</span>
+        <span className='ml-60 mr-60'>Page {currentPage} of {totalPages}</span>
         <Button
           className='bg-blue-500 ml-44'
           onClick={() => handlePageChange(currentPage + 1)}

@@ -62,6 +62,7 @@ export default function Home() {
       confirmButtonColor: '#3085d6',
       confirmButtonText: 'Confirm!'
     });
+   
 
     if (result.isConfirmed) {
       try {
@@ -82,8 +83,17 @@ export default function Home() {
     }
   };
 
+  const handleDetail = (accountId) => {
+    if (custId) {
+      window.location.href = `http://localhost:3000/balancemanage/detail/transaction?customerId=${custId}&accountId=${accountId}`;
+    } else {
+      // Xử lý trường hợp không có customerId (nếu cần)
+      console.error('Customer ID is missing');
+    }
+  };
+  
 
-
+  
   const handlePageChange = (newPage) => {
     if (newPage < 1 || newPage > totalPages) return; // Prevent invalid page changes
     setCurrentPage(newPage);
@@ -116,42 +126,42 @@ export default function Home() {
         {/* <Button className='bg-green-500 float-left ml-2' onClick={handleAdd}>Create</Button> */}
       </form>
       <br />
-      <h1 className='text-center text-lg opacity-80 mt-8'>A list of your Customer.</h1>
+      <h1 className='text-center text-lg opacity-80 mt-8'>A list of your Account.</h1>
       <Table className='text-base'>
         <TableCaption className='text-lg'></TableCaption>
         <TableHeader className='font-bold'>
           <TableRow>
-            <TableHead className="w-[100px] font-bold">ID</TableHead>
-            <TableHead className='font-bold'>Full Name</TableHead>
-            <TableHead className='font-bold'>Birth Day</TableHead>
-            <TableHead className='font-bold'>Incorn Day</TableHead>
-            <TableHead className='font-bold'>Address</TableHead>
-            <TableHead className='font-bold'>City</TableHead>
-            <TableHead className='font-bold'>CustomerType</TableHead>
+            <TableHead className="w-[100px] font-bold">Account ID</TableHead>
+            <TableHead >Balance</TableHead>
+            <TableHead >Branch</TableHead>
+            <TableHead>Employ Name</TableHead>
+            <TableHead>Product Name</TableHead>
             <TableHead></TableHead>
             <TableHead className="text-right font-bold"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {selectedData.length > 0 ? (
-            selectedData.map((item) => (
-              <TableRow key={item.custId}>
-                <TableCell className="font-medium">{item.custId}</TableCell>
-                <TableCell>{item.accounts.account.productName}</TableCell>
-                
+        {selectedData.length > 0 ? (
+          selectedData.map((customer) => (
+            customer.accounts.map((account) => (
+              <TableRow key={account.account.account_Id}>
+                <TableCell>{account.account.account_Id}</TableCell>
+                <TableCell>{account.account.availBalance}</TableCell>
+                <TableCell>{account.branchName}</TableCell>
+                <TableCell>{account.employeeName}</TableCell>
+                <TableCell>{account.productName}</TableCell>
                 <TableCell className='text-right w-3'>
-                  <Button className='bg-blue-500' onClick={() => handleEdit(item.custId)}>Detail</Button>
-                </TableCell>
-
-          
+  <Button className='bg-blue-500' onClick={() => handleDetail(account.account.account_Id)}>Detail</Button>
+</TableCell>
               </TableRow>
             ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan="4" className="text-center">No data available</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan="6" className="text-center">No data available</TableCell>
+          </TableRow>
+        )}
+      </TableBody>
       </Table>
       
       <div className='fixed bottom-10 flex items-center bg-white mb-10 ml-20'>
@@ -162,7 +172,7 @@ export default function Home() {
         >
           Previous
         </Button>
-        <span className='ml-96 mr-96'>Page {currentPage} of {totalPages}</span>
+        <span className='ml-60 mr-60'>Page {currentPage} of {totalPages}</span>
         <Button
           className='bg-blue-500 ml-44'
           onClick={() => handlePageChange(currentPage + 1)}

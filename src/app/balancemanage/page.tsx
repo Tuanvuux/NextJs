@@ -129,9 +129,7 @@ export default function Home() {
           <TableRow>
             <TableHead className="w-[100px] font-bold">ID</TableHead>
             <TableHead className='font-bold'>Full Name</TableHead>
-           
             <TableHead className='font-bold'>Incorn Day</TableHead>
-          
             <TableHead className='font-bold'>City</TableHead>
             <TableHead className='font-bold'>CustomerType</TableHead>
             <TableHead className='font-bold'>Total Balance</TableHead>
@@ -145,16 +143,13 @@ export default function Home() {
               <TableRow key={item.custId}>
                 <TableCell className="font-medium">{item.custId}</TableCell>
                 <TableCell>{item.fullName}</TableCell>
-              
                 <TableCell>{item.incorpDay}</TableCell>
-              
                 <TableCell>{item.city}</TableCell>
                 <TableCell>{item.customerType}</TableCell>
                 <TableCell>{item.totalBalance}</TableCell>
                 <TableCell className='text-right w-3'>
                   <Button className='bg-blue-500' onClick={() => handleDetail(item.custId)}>Detail</Button>
                 </TableCell>
-
                 {/* <TableCell className='text-right w-3'>
                   <Button className='bg-orange-400' onClick={() => handleEdit(item.custId)}>Edit</Button>
                 </TableCell>
@@ -179,7 +174,7 @@ export default function Home() {
         >
           Previous
         </Button>
-        <span className='ml-96 mr-96'>Page {currentPage} of {totalPages}</span>
+        <span className='ml-60 mr-60'>Page {currentPage} of {totalPages}</span>
         <Button
           className='bg-blue-500 ml-44'
           onClick={() => handlePageChange(currentPage + 1)}
